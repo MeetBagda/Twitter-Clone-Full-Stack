@@ -59,9 +59,7 @@ const Login = () => {
           </p>
         </form>
       </div>
-        <div className='absolute bottom-4 right-4'>
-            <h1 className="text-gray-500 text-sm">NULICLASS</h1>
-            </div>
+        
     </div>
   );
 };
