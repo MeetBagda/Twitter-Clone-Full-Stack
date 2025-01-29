@@ -7,32 +7,35 @@ import Home from './pages/Home';
 import Feed from './pages/Feed';
 import Explore from './pages/Explore';
 import Messages from './pages/Messages';
+import Widgets from "./pages/Widget";
+import "./App.css";
 
 function App() {
-    return (
-        <Router>
-        <div className='flex h-screen'>
-        <Sidebar/>
+  return (
+    <Router>
+      <div className='flex px-40'>
+        <Sidebar />
           <div className='w-full'>
-          <Routes>
-                        <Route path="/signup" element={<Signup />} />
-                        <Route path="/login" element={<Login />} />
-                         <Route path="/" element={<Feed />} />
-                        <Route path="/explore" element={<Explore />} />
-                        <Route path="/notifications" element={<h1>Notifications</h1>} />
-                        <Route path="/messages" element={<Messages />} />
-                        <Route path="/bookmarks" element={<h1>hello</h1>} />
-                         <Route path="/lists" element={<h1>Lists</h1>} />
-                         <Route path="/profile" element={<h1>Profile</h1>} />
-                        <Route path="/more" element={<h1>More</h1>} />
-                            <Route path="/grok" element={<h1>Grok</h1>} />
-                         <Route path="/communities" element={<h1>Communities</h1>} />
-                           <Route path="/premium" element={<h1>Premium</h1>} />
-                    </Routes>
-          </div>
-        </div>
-      </Router>
-    );
+            <Routes>
+             <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<Login />} />
+                <Route path="/" element={<Feed />} />
+                <Route path="/explore" element={<Explore />} />
+               <Route path="/notifications" element={<h1>Notifications</h1>} />
+                <Route path="/messages" element={<Messages />} />
+                 <Route path="/bookmarks" element={<h1>Bookmark</h1>} />
+                <Route path="/lists" element={<h1>Lists</h1>} />
+                 <Route path="/profile" element={<h1>Profile</h1>} />
+               <Route path="/more" element={<h1>More</h1>} />
+                 <Route path="/grok" element={<h1>Grok</h1>} />
+               <Route path="/communities" element={<h1>Communities</h1>} />
+                  <Route path="/premium" element={<h1>Premium</h1>} />
+           </Routes>
+         </div>
+           <Widgets/>
+      </div>
+    </Router>
+  );
 }
 
 export default App;
