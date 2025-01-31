@@ -1,6 +1,8 @@
 import React from 'react';
 import {  useNavigate } from 'react-router-dom';
-import {  ArrowBackIcon, AddLinkIcon, LocationOnIcon,  } from "@mui/icons-material";
+// import {  ArrowBackIcon, AddLinkIcon, LocationOnIcon,  } from "@mui/icons-material";
+import { LinkIcon } from '@heroicons/react/24/outline';
+import { LocationCityRounded } from '@mui/icons-material';
 
 
 
@@ -10,8 +12,8 @@ const MainProfile = ({user}) => {
         id: "1",
         name: "Meet Bagda",
         displayName: "@meetbagda035",
-        profileImage: "https://cdn.pixabay.com/photo/2016/08/09/17/47/avatar-1577909_960_720.png",
-        coverImage: "https://images.unsplash.com/photo-1472108520966-5961431112f6?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        profileImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSj7j9IDpZsbq4HghrNPneZustxYupRgrt0oQ&s",
+        coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSj7j9IDpZsbq4HghrNPneZustxYupRgrt0oQ&s",
         bio: "A passionate web developer",
         location: "India",
         website: "https://www.meetbagda.com"
@@ -54,12 +56,12 @@ const MainProfile = ({user}) => {
                      <p className="text-gray-500 text-sm ">{loggedInUser?.bio}</p>
                   </div>
                 <div className="flex items-center space-x-1 mt-4">
-                  <LocationOnIcon  style={{ fontSize: '15px', color:"gray" }} />
+                  <LocationCityRounded  style={{ fontSize: '15px', color:"gray" }} />
                   <p className="text-gray-500 text-sm">{loggedInUser?.location}</p>
                 </div>
 
                   <div className="flex items-center space-x-1 mt-4">
-                     <AddLinkIcon style={{ fontSize: '15px', color:"gray" }} />
+                     <LinkIcon width={17} />
                        <a  href={loggedInUser?.website} className="text-gray-500 text-sm">{loggedInUser?.website}
                         </a>
                     </div>

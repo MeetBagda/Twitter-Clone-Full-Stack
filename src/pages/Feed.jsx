@@ -8,7 +8,7 @@ const Feed = () => {
             id: "1",
             name: "Jane Doe",
             username: "jane_doe",
-            profilePhoto: "https://cdn.pixabay.com/photo/2016/08/09/17/47/avatar-1577909_960_720.png",
+            profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSj7j9IDpZsbq4HghrNPneZustxYupRgrt0oQ&s",
             post: "Exploring the new features in JavaScript! #coding #javascript",
              photo: "https://images.unsplash.com/photo-1531297487003-8014041694e9?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         },
@@ -16,14 +16,14 @@ const Feed = () => {
             id: "2",
             name: "John Smith",
             username: "johnsmith",
-             profilePhoto: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+             profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSj7j9IDpZsbq4HghrNPneZustxYupRgrt0oQ&s",
             post: "Just finished a great workout session! #fitness #health"
         },
         {
             id: "3",
             name: "Alice Johnson",
              username: "alicejohnson",
-            profilePhoto: "https://images.unsplash.com/photo-1552058544-f2b28b06e37e?q=80&w=1590&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            profilePhoto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSj7j9IDpZsbq4HghrNPneZustxYupRgrt0oQ&s",
             post: "Loving the new features in CSS! #webdevelopment #design",
             photo: "https://images.unsplash.com/photo-1612223459441-c5d1006e467b?q=80&w=1527&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         }

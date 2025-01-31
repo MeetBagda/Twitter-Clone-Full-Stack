@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowBackIcon } from "@mui/icons-material";
+import {  ArrowBack, BackHand } from "@mui/icons-material";
 
 
 const EditProfile = () => {
@@ -13,7 +13,7 @@ const EditProfile = () => {
     return (
         <div className="flex flex-col p-8">
             <div className="flex items-center mb-4">
-                  <ArrowBackIcon className="cursor-pointer mr-2"  onClick={handleBack} style={{ fontSize: '25px' }} />
+                  <ArrowBack className="cursor-pointer mr-2"  onClick={handleBack} style={{ fontSize: '25px' }} />
                 <h1 className='text-xl font-bold text-gray-700 '>Edit profile</h1>
             </div>
             {/* form elements to edit profile */}
