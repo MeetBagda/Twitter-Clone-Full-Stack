@@ -6,7 +6,7 @@ import RepeatIcon from '@mui/icons-material/Repeat';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import PublishIcon from '@mui/icons-material/Publish';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import  BookmarkBorder  from '@mui/icons-material';
+import { BookmarkAddOutlined } from '@mui/icons-material';
 
 
 const Posts = ({name, username, post, photo, profilePhoto}) => {
@@ -36,7 +36,7 @@ const Posts = ({name, username, post, photo, profilePhoto}) => {
                 <ChatBubbleOutlineIcon  style={{ fontSize: '20px' }}/>
                 <RepeatIcon  style={{ fontSize: '20px' }}/>
                <FavoriteBorderIcon  style={{ fontSize: '20px' }}/>
-               <BookmarkBorder  style={{ fontSize: '20px' }}/>
+               <BookmarkAddOutlined  style={{ fontSize: '20px' }}/>
                 <PublishIcon  style={{ fontSize: '20px' }}/>
             </div>
         </div>
