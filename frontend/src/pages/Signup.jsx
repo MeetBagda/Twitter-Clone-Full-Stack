@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import twillerBg from "../assets/twiller-bg.jpg";
+import { useUserAuth } from "../context/userAuthContext";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -8,21 +9,45 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
+  const { signIn } = useUserAuth();
+  const { googleSignIn } = useUserAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     try {
-      const user = {
-        username: username,
-        name: name,
-      };
-      console.log(user);
+      const userCredential = await signIn(email, password);
+      const user = userCredential.user;
+
+      await fetch("YOUR_API_ENDPOINT", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          uid: user.uid,
+          username: username,
+          name: name,
+          email: email,
+        }),
+      });
+       console.log("User data sent to backend successfully");
+       navigate("/");
     } catch (error) {
-      console.log(error);
+      setError(error.message);
       window.alert(error.message);
     }
   };
+  const handleGoogleSignIn = async (e) => {
+    e.preventDefault();
+    try {
+      await googleSignIn();
+      navigate("/")
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
   return (
     <div className="flex h-screen">
@@ -99,6 +124,7 @@ const Signup = () => {
           </button>
           <div className="mt-4">
             <button
+            onClick={handleGoogleSignIn}
               type="button"
               className="w-full border border-gray-300 hover:bg-gray-100 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center justify-center"
             >

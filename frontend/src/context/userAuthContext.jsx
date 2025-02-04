@@ -17,7 +17,7 @@ import {
     function logIn(email, password) {
       return signInWithEmailAndPassword(auth, email, password);
     }
-    function signUp(email, password) {
+    function signIn(email, password) {
       return createUserWithEmailAndPassword(auth, email, password);
     }
     function logOut() {
@@ -39,7 +39,7 @@ import {
     }, []);
   
     return (
-      <UserAuthContext.Provider value={{ user, logIn, signUp, logOut, googleSignIn }}>
+      <UserAuthContext.Provider value={{ user, logIn, signIn, logOut, googleSignIn }}>
         {children}
       </UserAuthContext.Provider>
     );
