@@ -66,16 +66,17 @@ export default Sidebar;
 
 const ToggleBar = ({ user, logout }) => {
     const [isOpen, setIsOpen] = useState(false);
-     const navigate = useNavigate();
+    const navigate = useNavigate();
     const dropdownRef = useRef(null);
+
     const handleLogout = async () => {
-          try {
-           await logout();
-             navigate("/signin")
-           } catch (error) {
-             console.log(error.message);
-          }
-      }
+        try {
+            await logout();
+            navigate("/signin");
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
 
     const handleClickOutside = (event) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -90,27 +91,42 @@ const ToggleBar = ({ user, logout }) => {
         };
     }, []);
 
+    const toggleDropdown = () => {
+        setIsOpen(prev => !prev); // Toggle open state
+    };
+
     return (
         <div className="relative">
-            <button onClick={() => setIsOpen(!isOpen)} className=" mt-6 p-2 cursor-pointer flex items-center space-x-2 hover:bg-gray-100 rounded-full ">
+            <button 
+                onClick={toggleDropdown} // Toggle functionality
+                className="mt-6 p-2 cursor-pointer flex items-center space-x-2 hover:bg-gray-100 rounded-full"
+            >
                 <img
                     src={user?.profileImage}
                     alt="Profile"
-                    className="h-10 w-10  object-cover "
+                    className="h-10 w-10 object-cover"
                 />
                 <div className='flex flex-col'>
                     <h5 className='font-bold text-sm'>{user?.name}</h5>
                     <h6 className='text-gray-500 text-sm'>{user?.displayName}</h6>
                 </div>
 
-                <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 ml-auto"><g><path d="M19.707 12.293l-7-7c-.39-.39-1.023-.39-1.414 0l-7 7c-.39.39-.39 1.023 0 1.414.39.39 1.023.39 1.414 0L12 7.414l6.293 6.293c.39.39 1.023.39 1.414 0 .39-.39.39-1.023 0-1.414z"></path></g></svg>
+                {/* Change icon based on isOpen state */}
+                <svg viewBox="0 0 24 24" aria-hidden="true" className={`h-5 w-5 ml-auto transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
+                    <g>
+                        <path d="M19.707 12.293l-7-7c-.39-.39-1.023-.39-1.414 0l-7 7c-.39.39-.39 1.023 0 1.414.39.39 1.023.39 1.414 0L12 7.414l6.293 6.293c.39.39 1.023.39 1.414 0 .39-.39.39-1.023 0-1.414z"></path>
+                    </g>
+                </svg>
             </button>
 
             {isOpen && (
-                <div ref={dropdownRef} className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
+                <div ref={dropdownRef} className="absolute bottom-full right-0 mb-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
                     <div className="py-1" role="none">
-                       {/* Add existing Account option if necessary */}
-                        <button onClick={handleLogout} className="text-gray-700 block w-full px-4 py-2 text-left text-sm hover:bg-gray-100 hover:text-blue-500" role="menuitem">
+                        <button 
+                            onClick={handleLogout} 
+                            className="text-gray-700 block w-full px-4 py-2 text-left text-sm hover:bg-gray-100 hover:text-blue-500" 
+                            role="menuitem"
+                        >
                             Log out @{user?.displayName}
                         </button>
                     </div>
@@ -119,3 +135,4 @@ const ToggleBar = ({ user, logout }) => {
         </div>
     );
 };
+
