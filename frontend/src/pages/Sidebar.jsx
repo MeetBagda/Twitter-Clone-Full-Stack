@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useUserAuth } from "../context/userAuthContext";
+
 import SidebarOption from './SidebarOption';
 import {
     HomeIcon,
@@ -13,15 +16,19 @@ import {
     UserGroupIcon,
     CurrencyDollarIcon,
 } from '@heroicons/react/24/outline';
-import { Link } from 'react-router-dom';
+import { Link} from 'react-router-dom';
+
 
 
 const Sidebar = () => {
+    const {logOut} = useUserAuth();
     const loggedInUser = {
          name: 'Meet Bagda',
          displayName: '@meetbagda035',
         profileImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSj7j9IDpZsbq4HghrNPneZustxYupRgrt0oQ&s"
     }
+
+
 
     return (
         <div className="flex flex-col p-4 w-[40%] h-screen border-r-2 border-gray-100">
@@ -50,21 +57,65 @@ const Sidebar = () => {
 
 
            <button className="bg-blue-500 text-white rounded-full w-full h-12 mt-4 font-bold hover:bg-blue-600">Post</button>
-           <div className=" mt-6 p-2 cursor-pointer flex items-center space-x-2 hover:bg-gray-100 rounded-full ">
-               <img
-                   src={loggedInUser?.profileImage}
-                   alt="Profile"
-                   className="h-10 w-10 rounded-full object-cover "
-               />
-              <div className='flex flex-col'>
-                 <h5 className='font-bold text-sm'>{loggedInUser?.name}</h5>
-                  <h6 className='text-gray-500 text-sm'>{loggedInUser?.displayName}</h6>
-              </div>
-
-               <EllipsisHorizontalCircleIcon className="h-5 w-5 ml-auto"/>
+          <ToggleBar user={loggedInUser} logout={logOut}/>
          </div>
-      </div>
     );
 };
 
 export default Sidebar;
+
+const ToggleBar = ({ user, logout }) => {
+    const [isOpen, setIsOpen] = useState(false);
+     const navigate = useNavigate();
+    const dropdownRef = useRef(null);
+    const handleLogout = async () => {
+          try {
+           await logout();
+             navigate("/signin")
+           } catch (error) {
+             console.log(error.message);
+          }
+      }
+
+    const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            setIsOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    return (
+        <div className="relative">
+            <button onClick={() => setIsOpen(!isOpen)} className=" mt-6 p-2 cursor-pointer flex items-center space-x-2 hover:bg-gray-100 rounded-full ">
+                <img
+                    src={user?.profileImage}
+                    alt="Profile"
+                    className="h-10 w-10  object-cover "
+                />
+                <div className='flex flex-col'>
+                    <h5 className='font-bold text-sm'>{user?.name}</h5>
+                    <h6 className='text-gray-500 text-sm'>{user?.displayName}</h6>
+                </div>
+
+                <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 ml-auto"><g><path d="M19.707 12.293l-7-7c-.39-.39-1.023-.39-1.414 0l-7 7c-.39.39-.39 1.023 0 1.414.39.39 1.023.39 1.414 0L12 7.414l6.293 6.293c.39.39 1.023.39 1.414 0 .39-.39.39-1.023 0-1.414z"></path></g></svg>
+            </button>
+
+            {isOpen && (
+                <div ref={dropdownRef} className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
+                    <div className="py-1" role="none">
+                       {/* Add existing Account option if necessary */}
+                        <button onClick={handleLogout} className="text-gray-700 block w-full px-4 py-2 text-left text-sm hover:bg-gray-100 hover:text-blue-500" role="menuitem">
+                            Log out @{user?.displayName}
+                        </button>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
