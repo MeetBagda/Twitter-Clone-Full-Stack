@@ -68,6 +68,7 @@ const ToggleBar = ({ user, logout }) => {
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
     const dropdownRef = useRef(null);
+    const toggleButtonRef = useRef(null);  // Ref for the toggle button
 
     const handleLogout = async () => {
         try {
@@ -79,7 +80,8 @@ const ToggleBar = ({ user, logout }) => {
     };
 
     const handleClickOutside = (event) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target) &&
+            (!toggleButtonRef.current || !toggleButtonRef.current.contains(event.target))) { // Check if click is NOT inside the toggle button
             setIsOpen(false);
         }
     };
@@ -92,13 +94,14 @@ const ToggleBar = ({ user, logout }) => {
     }, []);
 
     const toggleDropdown = () => {
-        setIsOpen(prev => !prev); // Toggle open state
+        setIsOpen(prev => !prev);
     };
 
     return (
         <div className="relative">
-            <button 
-                onClick={toggleDropdown} // Toggle functionality
+            <button
+                ref={toggleButtonRef}  // Assign the ref to the button
+                onClick={toggleDropdown}
                 className="mt-6 p-2 cursor-pointer flex items-center space-x-2 hover:bg-gray-100 rounded-full"
             >
                 <img
@@ -111,7 +114,6 @@ const ToggleBar = ({ user, logout }) => {
                     <h6 className='text-gray-500 text-sm'>{user?.displayName}</h6>
                 </div>
 
-                {/* Change icon based on isOpen state */}
                 <svg viewBox="0 0 24 24" aria-hidden="true" className={`h-5 w-5 ml-auto transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
                     <g>
                         <path d="M19.707 12.293l-7-7c-.39-.39-1.023-.39-1.414 0l-7 7c-.39.39-.39 1.023 0 1.414.39.39 1.023.39 1.414 0L12 7.414l6.293 6.293c.39.39 1.023.39 1.414 0 .39-.39.39-1.023 0-1.414z"></path>
@@ -122,9 +124,9 @@ const ToggleBar = ({ user, logout }) => {
             {isOpen && (
                 <div ref={dropdownRef} className="absolute bottom-full right-0 mb-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
                     <div className="py-1" role="none">
-                        <button 
-                            onClick={handleLogout} 
-                            className="text-gray-700 block w-full px-4 py-2 text-left text-sm hover:bg-gray-100 hover:text-blue-500" 
+                        <button
+                            onClick={handleLogout}
+                            className="text-gray-700 block w-full px-4 py-2 text-left text-sm hover:bg-gray-100 hover:text-blue-500"
                             role="menuitem"
                         >
                             Log out @{user?.displayName}
