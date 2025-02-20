@@ -1,111 +1,48 @@
-const express = require("express");
+const { MongoClient } = require("mongodb");
+const express = require("express")
 const router = express.Router();
-const { userSchema } = require("../types");
-const { User } = require("../db");
-const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = require("../config");
-const zod = require('zod');
-const { authMiddleware } = require("../middleware");
-const cors = require('cors');
+require('dotenv').config();
 
-router.use(cors());
+const client = new MongoClient(process.env.MONGO_URI);
+client.connect();
+const userCollection = client.db("database").collection("users");
 
-router.post("/signup", async (req, res) => {
-    const createPayLoad = req.body;
-    const parsedPayLoad = userSchema.safeParse(createPayLoad);
-
-    if (!parsedPayLoad.success) {
-        return res.status(411).json({
-            msg: "Invalid input",
-            errors: parsedPayLoad.error.issues,
-        });
-    }
-
+router.post('/create', async (req, res) => {
     try {
-        const user = await User.create({
-            username: createPayLoad.username,
-            fullName: createPayLoad.fullName,
-            email: createPayLoad.email,
-            password: createPayLoad.password,
-        });
+        const { username, name, email } = req.body;
 
-        const userId = user._id;
+        if (!username || !name || !email) {
+            return res.status(400).json({ message: "Missing required fields" });
+        }
+        console.log({ username, name, email })
 
-        const token = jwt.sign(
-            { userId: userId },
-            JWT_SECRET,
-            { expiresIn: '1h' }
-        );
+        const result = await userCollection.insertOne({ username, name, email });
 
-        // Send the userId with the token
+        if (!result.acknowledged) {
+            console.log("Error inserting document");
+            return res.status(500).json({ message: "Failed to save user" });
+        }
+
+        console.log("User saved successfully with _id:", result.insertedId);
         res.status(201).json({
-            msg: "User created successfully",
-            token: token,
-            userId: userId
+            message: "User saved successfully",
+            userId: result.insertedId,
         });
+
     } catch (error) {
-        console.error("Error during User creation:", error);
-        if (error.code === 11000) {
-            const key = Object.keys(error.keyPattern)[0];
-            return res.status(400).json({ msg: `${key} already registered` });
-        }
-        res.status(500).json({
-            msg: "Error creating user",
-            error: error.message,
-        });
+        console.error("Error creating user:", error);
+        res.status(500).json({ message: "Internal server error" });
     }
 });
-
-const signinBody = zod.object({
-    email: zod.string().email("Invalid email address"),
-    password: zod.string()
-});
-
-router.post("/signin", async (req, res) => {
-    const { success, error } = signinBody.safeParse(req.body);
-    if (!success) {
-        return res.status(400).json({
-            msg: "Invalid input",
-            errors: error.errors,
-        });
-    }
-
+router.get("/loggedinuser", async (req, res) => {
     try {
-      const user = await User.findOne({ email: req.body.email });
-
-        if (!user) {
-          return res.status(401).json({ msg: "Incorrect email or password" });
-        }
-
-        if (req.body.password !== user.password) {
-          return res.status(401).json({ msg: "Incorrect email or password" });
-        }
-        const userId = user._id
-         const token = jwt.sign(
-            { userId: userId },
-            JWT_SECRET,
-            { expiresIn: '1h' }
-        );
-
-        res.json({
-            token: token,
-            userId: userId,
-        });
+      const email = req.query.email;
+      const user = await userCollection.find({ email: email }).toArray();
+      res.status(200).json(user);
     } catch (error) {
-        console.error("Error during signin:", error);
-        res.status(500).json({
-            msg: "Failed to sign in",
-            error: error.message,
-        });
-    }
-});
-
-router.get("/users", async (req, res) => {
-    try {
-      const users = await User.find({}, "_id username email"); 
-      res.json(users);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-      res.status(500).json({ msg: "Error fetching users", error: error.message });
+      console.error("Error getting user:", error);
+      res.status(500).json({ message: "Internal server error" });
     }
   });
+
+module.exports = router;
