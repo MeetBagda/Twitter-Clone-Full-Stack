@@ -17,37 +17,42 @@ const Signup = () => {
     e.preventDefault();
     setError("");
     try {
-      const userCredential = await signIn(email, password);
-      const user = userCredential.user;
+        const userCredential = await signIn(email, password);
+        const user = userCredential.user;
 
-      await fetch("YOUR_API_ENDPOINT", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          uid: user.uid,
-          username: username,
-          name: name,
-          email: email,
-        }),
-      });
-       console.log("User data sent to backend successfully");
-       navigate("/");
+        await fetch("http://localhost:8585/api/v1/user/create", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                username: username,
+                name: name,
+                email: email,
+            }),
+        });
+        console.log("User data sent to backend successfully");
+        navigate("/");
     } catch (error) {
-      setError(error.message);
-      window.alert(error.message);
+        setError(error.message);
+        window.alert(error.message);
     }
-  };
-  const handleGoogleSignIn = async (e) => {
+};
+const handleGoogleSignIn = async (e) => {
     e.preventDefault();
     try {
-      await googleSignIn();
-      navigate("/")
+        await googleSignIn();
+        navigate("/");
     } catch (error) {
-      console.log(error.message);
+        if (error.code === "auth/popup-closed-by-user") {
+            setError("Google sign-in was interrupted. Please try again.");
+            window.alert("Google sign-in was interrupted. Please try again.");
+        } else {
+            setError(error.message);
+            window.alert(error.message);
+        }
     }
-  }
+};
 
   return (
     <div className="flex h-screen">

@@ -99,13 +99,13 @@ const ToggleBar = ({ user, logout }) => {
                 className="mt-6 p-2 cursor-pointer flex items-center space-x-2 hover:bg-gray-100 rounded-full"
             >
                 <img
-                    src={user?.profileImage}
+                    src={user?.photoURL}
                     alt="Profile"
-                    className="h-10 w-10 object-cover"
+                    className="h-10 w-10 object-cover rounded-full"
                 />
                 <div className='flex flex-col'>
                     <h5 className='font-bold text-sm'>{user?.name}</h5>
-                    <h6 className='text-gray-500 text-sm'>{user?.displayName}</h6>
+                    <h6 className='text-gray-500 text-sm'>{user?.displayName ? user?.displayName : user?.email }</h6>
                 </div>
 
                 <svg viewBox="0 0 24 24" aria-hidden="true" className={`h-5 w-5 ml-auto transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
@@ -123,7 +123,7 @@ const ToggleBar = ({ user, logout }) => {
                             className="text-gray-700 block w-full px-4 py-2 text-left text-sm hover:bg-gray-100 hover:text-blue-500"
                             role="menuitem"
                         >
-                            Log out @{user?.displayName}
+                            Log out @{user?.displayName ? user?.displayName : user?.email }
                         </button>
                     </div>
                 </div>
