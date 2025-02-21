@@ -6,6 +6,7 @@ require('dotenv').config();
 const client = new MongoClient(process.env.MONGO_URI);
 client.connect();
 const userCollection = client.db("database").collection("users");
+const postcollection = client.db("database").collection("posts");
 
 router.post('/create', async (req, res) => {
     try {
@@ -43,6 +44,23 @@ router.get("/loggedinuser", async (req, res) => {
       console.error("Error getting user:", error);
       res.status(500).json({ message: "Internal server error" });
     }
+  });
+
+  router.get("/user", async (req, res) => {
+    const user = await userCollection.find().toArray();
+    res.send(user);
+  });
+
+ 
+
+  router.patch("/userupdate/:email", async (req, res) => {
+    const filter = req.params;
+    const profile = req.body;
+    const options = { upsert: true };
+    const updateDoc = { $set: profile };
+    // console.log(profile)
+    const result = await userCollection.updateOne(filter, updateDoc, options);
+    res.send(result);
   });
 
 module.exports = router;
